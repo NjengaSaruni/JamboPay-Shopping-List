@@ -1,12 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 
-from lists.models import Item, ShoppingList, ShoppingItem
-
-
-class ItemSerializer(ModelSerializer):
-    class Meta:
-        model = Item
-        fields = '__all__'
+from common.serializers import ItemSerializer
+from lists.models import ShoppingList, ShoppingItem
 
 
 class ShoppingItemSerializer(ModelSerializer):

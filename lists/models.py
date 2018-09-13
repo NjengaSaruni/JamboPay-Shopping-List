@@ -8,6 +8,8 @@ from django.db import models
 
 
 # Create your models here.
+from common.models import Item
+
 
 class AbstractBase(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -17,15 +19,6 @@ class AbstractBase(models.Model):
 
     class Meta:
         abstract = True
-
-
-class Item(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=254)
-    description = models.TextField(null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True, blank=True)
-    updated_at = models.DateTimeField(auto_now=True, blank=True)
-    price = models.DecimalField(blank=True, default=0.0, decimal_places=2, max_digits=100)
 
 
 class ShoppingList(AbstractBase):
