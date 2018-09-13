@@ -13,3 +13,16 @@ class Item(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
     price = models.DecimalField(blank=True, default=0.0, decimal_places=2, max_digits=100)
+    size = models.DecimalField(blank=True, null=True, default=1.00, decimal_places=2, max_digits=100)
+    unit = models.CharField(null=True, blank=True, max_length=255)
+
+    def __unicode__(self):
+        if not self.unit:
+            self.unit = ''
+
+        return '{} {} x {} - Kshs {}'.format(
+            self.size,
+            self.unit,
+            self.name,
+            self.price
+        )

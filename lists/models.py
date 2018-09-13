@@ -26,6 +26,12 @@ class ShoppingList(AbstractBase):
     description = models.TextField(null=True, blank=True)
     budget = models.DecimalField(blank=True, default=0.0, decimal_places=2, max_digits=100)
 
+    def __unicode__(self):
+        return '{} - {}'.format(
+            self.name,
+            self.budget
+        )
+
 
 class ShoppingItem(AbstractBase):
     item = models.ForeignKey(Item)
