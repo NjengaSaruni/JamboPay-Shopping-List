@@ -6,6 +6,7 @@ import uuid
 from django.conf import settings
 from django.db import models
 
+
 # Create your models here.
 
 class AbstractBase(models.Model):
@@ -17,6 +18,7 @@ class AbstractBase(models.Model):
     class Meta:
         abstract = True
 
+
 class Item(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=254)
@@ -25,10 +27,11 @@ class Item(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=True)
     price = models.DecimalField(blank=True, default=0.0)
 
+
 class ShoppingList(AbstractBase):
     name = models.CharField(max_length=254)
     description = models.TextField(null=True, blank=True)
-    budget = models.DecimalField(blank=True)
+    budget = models.DecimalField(blank=True, default=0.0)
 
 
 class ShoppingItem(AbstractBase):
@@ -40,5 +43,3 @@ class ShoppingItem(AbstractBase):
         return self.item.price * self.quantity
 
     price = property(get_total_price)
-
-
