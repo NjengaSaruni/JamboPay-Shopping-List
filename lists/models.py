@@ -25,13 +25,13 @@ class Item(models.Model):
     description = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
-    price = models.DecimalField(blank=True, default=0.0)
+    price = models.DecimalField(blank=True, default=0.0, decimal_places=2, max_digits=100)
 
 
 class ShoppingList(AbstractBase):
     name = models.CharField(max_length=254)
     description = models.TextField(null=True, blank=True)
-    budget = models.DecimalField(blank=True, default=0.0)
+    budget = models.DecimalField(blank=True, default=0.0, decimal_places=2, max_digits=100)
 
 
 class ShoppingItem(AbstractBase):
