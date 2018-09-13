@@ -6,26 +6,27 @@ from django.shortcuts import render
 # Create your views here.
 from rest_framework import generics
 
+from common.mixins import GetQuerysetMixin
 from lists.models import ShoppingList, ShoppingItem
 from lists.serializers import ShoppingListSerializer, ShoppingItemSerializer
 
 
-class ShoppingListListCreateView(generics.ListCreateAPIView):
+class ShoppingListListCreateView(GetQuerysetMixin, generics.ListCreateAPIView):
     serializer_class = ShoppingListSerializer
     queryset = ShoppingList.objects.all()
 
 
-class ShoppingListDetailView(generics.RetrieveUpdateDestroyAPIView):
+class ShoppingListDetailView(GetQuerysetMixin, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ShoppingListSerializer
     queryset = ShoppingList.objects.all()
 
 
-class ShoppingItemListCreateView(generics.ListCreateAPIView):
+class ShoppingItemListCreateView(GetQuerysetMixin, generics.ListCreateAPIView):
     serializer_class = ShoppingItemSerializer
     queryset = ShoppingItem.objects.all()
 
 
-class ShoppingItemDetailView(generics.RetrieveUpdateDestroyAPIView):
+class ShoppingItemDetailView(GetQuerysetMixin, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ShoppingItemSerializer
     queryset = ShoppingItem.objects.all()
 

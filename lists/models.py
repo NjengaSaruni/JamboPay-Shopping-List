@@ -6,7 +6,6 @@ import uuid
 from django.conf import settings
 from django.db import models
 
-
 # Create your models here.
 from common.models import Item
 
@@ -26,9 +25,19 @@ class ShoppingList(AbstractBase):
     description = models.TextField(null=True, blank=True)
     budget = models.DecimalField(blank=True, default=0.0, decimal_places=2, max_digits=100)
 
+    def get_total_price(self):
+        total = 0
+        for item in self.items.all():
+            total += item.price
+
+        return total
+
+    total = property(get_total_price)
+
     def __unicode__(self):
-        return '{} - {}'.format(
+        return '{} - {} / {}'.format(
             self.name,
+            self.total,
             self.budget
         )
 
@@ -42,3 +51,11 @@ class ShoppingItem(AbstractBase):
         return self.item.price * self.quantity
 
     price = property(get_total_price)
+
+    def __unicode__(self):
+        return '{} x {} in {} @ {}'.format(
+            self.quantity,
+            self.item.name,
+            self.list.name,
+            self.price
+        )

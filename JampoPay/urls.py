@@ -18,6 +18,8 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^browsable/', include(
+        'rest_framework.urls', namespace='rest_framework')),
     url(r'^catalogue/', include('common.urls', namespace='common')),
     url(r'^shopping-lists/', include('lists.urls', namespace='lists')),
     url(r'^users/', include('users.urls', namespace='users')),

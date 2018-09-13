@@ -1,12 +1,13 @@
 import operator
 from django.db.models import Q
+
+
 class GetQuerysetBaseMixin(object):
     def get_queryset(self, *args, **kwargs):
         self.queryset = super(GetQuerysetBaseMixin, self).get_queryset(*args, **kwargs)
 
         query = self.request.GET.get("q") or False
         # An icontains search using values in search fields specified in the calling view
-
 
         if query and hasattr(self, 'search_fields'):
             fields = [(field + '__icontains', query) for field in self.search_fields]
@@ -21,6 +22,7 @@ class GetQuerysetBaseMixin(object):
 
         return self.queryset
 
+
 class GetQuerysetMixin(GetQuerysetBaseMixin):
     user = None
 
@@ -29,11 +31,10 @@ class GetQuerysetMixin(GetQuerysetBaseMixin):
             Tries to get the institution to which a given object belongs
         """
         return self.queryset.filter(
-            shopper=self.request.user
+            shopper__id=self.request.user.id
         ).exclude(
             shopper=None
         )
-
 
     def get_queryset(self, *args, **kwargs):
         self.queryset = super(GetQuerysetMixin, self).get_queryset(*args, **kwargs)
@@ -42,4 +43,4 @@ class GetQuerysetMixin(GetQuerysetBaseMixin):
 
         self.queryset = self.filter_by_shopper()
 
-        return  self.queryset
+        return self.queryset
