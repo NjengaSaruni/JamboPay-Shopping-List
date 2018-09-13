@@ -11,6 +11,7 @@ class ItemSerializer(ModelSerializer):
 
 class ShoppingItemSerializer(ModelSerializer):
     item = ItemSerializer(read_only=True)
+
     class Meta:
         model = ShoppingItem
         fields = '__all__'
