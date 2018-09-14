@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import uuid
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 
 # Create your models here.
@@ -27,6 +28,7 @@ class ShoppingList(AbstractBase):
     name = models.CharField(max_length=254)
     description = models.TextField(null=True, blank=True)
     budget = models.DecimalField(blank=True, default=0.0, decimal_places=2, max_digits=100)
+    limit = models.DecimalField(blank=True, default=0.0, decimal_places=2, max_digits=100)
 
     def get_total_price(self):
         total = 0
@@ -45,6 +47,13 @@ class ShoppingList(AbstractBase):
         return total
 
     total_bought = property(get_total_bought)
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        if self.limit >= self.budget:
+            raise ValidationError('Budget limit cannot be bigger or equal to budget')
+
+        return super(ShoppingList, self).save()
 
     def __unicode__(self):
         return '{} - {} <> {}'.format(
