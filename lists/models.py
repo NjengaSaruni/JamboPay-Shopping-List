@@ -7,6 +7,9 @@ from django.conf import settings
 from django.db import models
 
 # Create your models here.
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 from common.models import Item
 
 
@@ -34,8 +37,17 @@ class ShoppingList(AbstractBase):
 
     total = property(get_total_price)
 
+    def get_total_bought(self):
+        total = 0
+        for item in self.items.filter(bought=True):
+            total += item.price
+
+        return total
+
+    total_bought = property(get_total_bought)
+
     def __unicode__(self):
-        return '{} - {} / {}'.format(
+        return '{} - {} <> {}'.format(
             self.name,
             self.total,
             self.budget
@@ -46,6 +58,7 @@ class ShoppingItem(AbstractBase):
     item = models.ForeignKey(Item)
     quantity = models.IntegerField(default=1, blank=True)
     list = models.ForeignKey(ShoppingList, related_name='items')
+    bought = models.BooleanField(default=False, blank=True)
 
     def get_total_price(self):
         return self.item.price * self.quantity
@@ -59,3 +72,14 @@ class ShoppingItem(AbstractBase):
             self.list.name,
             self.price
         )
+
+
+# method for updating
+@receiver(post_save, sender=ShoppingItem, dispatch_uid="update_budget")
+def update_budget(sender, instance, **kwargs):
+    if instance.bought:
+        instance.list.budget -= instance.price
+    else:
+        instance.list.budget += instance.price
+
+    instance.list.save()

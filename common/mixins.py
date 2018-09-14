@@ -30,6 +30,7 @@ class GetQuerysetMixin(GetQuerysetBaseMixin):
         """
             Tries to get the institution to which a given object belongs
         """
+
         return self.queryset.filter(
             shopper__id=self.request.user.id
         ).exclude(

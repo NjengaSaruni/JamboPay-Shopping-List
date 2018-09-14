@@ -15,6 +15,10 @@ class ShoppingListListCreateView(GetQuerysetMixin, generics.ListCreateAPIView):
     serializer_class = ShoppingListSerializer
     queryset = ShoppingList.objects.all()
 
+    search_fields = (
+        'items',
+    )
+
 
 class ShoppingListDetailView(GetQuerysetMixin, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ShoppingListSerializer
@@ -24,6 +28,9 @@ class ShoppingListDetailView(GetQuerysetMixin, generics.RetrieveUpdateDestroyAPI
 class ShoppingItemListCreateView(GetQuerysetMixin, generics.ListCreateAPIView):
     serializer_class = ShoppingItemSerializer
     queryset = ShoppingItem.objects.all()
+    search_fields = [
+        'item__name', 'item__price'
+    ]
 
 
 class ShoppingItemDetailView(GetQuerysetMixin, generics.RetrieveUpdateDestroyAPIView):
