@@ -123,6 +123,7 @@ STATIC_URL = '/static/'
 
 # All CORS stuff
 CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = '*'
 
 # REST Framework stuff
 REST_FRAMEWORK = {
