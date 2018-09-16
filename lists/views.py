@@ -11,13 +11,18 @@ from lists.models import ShoppingList, ShoppingItem
 from lists.serializers import ShoppingListSerializer, ShoppingItemSerializer
 
 
-class ShoppingListListCreateView(GetQuerysetMixin, generics.ListCreateAPIView):
+class ShoppingListListCreateView(generics.ListCreateAPIView):
     serializer_class = ShoppingListSerializer
     queryset = ShoppingList.objects.all()
 
     search_fields = (
         'items',
     )
+
+    def create(self, request, *args, **kwargs):
+        request.data['shopper'] = request.user.id
+
+        return super(ShoppingListListCreateView, self).create(request);
 
 
 class ShoppingListDetailView(GetQuerysetMixin, generics.RetrieveUpdateDestroyAPIView):
@@ -36,4 +41,3 @@ class ShoppingItemListCreateView(GetQuerysetMixin, generics.ListCreateAPIView):
 class ShoppingItemDetailView(GetQuerysetMixin, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ShoppingItemSerializer
     queryset = ShoppingItem.objects.all()
-

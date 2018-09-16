@@ -1,5 +1,7 @@
 import operator
+
 from django.db.models import Q
+from rest_framework import serializers
 
 
 class GetQuerysetBaseMixin(object):
@@ -45,3 +47,20 @@ class GetQuerysetMixin(GetQuerysetBaseMixin):
         self.queryset = self.filter_by_shopper()
 
         return self.queryset
+
+
+class AbstractFieldsMixin(serializers.ModelSerializer):
+    # Use this method for the custom field
+    def _user(self):
+        request = getattr(self.context, 'request', None)
+        if request:
+            return request.user
+
+    def create(self, validated_data):
+        user = self._user()
+
+        self.initial_data['shopper'] = user.id
+
+        print self.initial_data
+
+        return super(AbstractFieldsMixin, self).create(validated_data)

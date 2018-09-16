@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -23,5 +24,6 @@ urlpatterns = [
     url(r'^catalogue/', include('common.urls', namespace='common')),
     url(r'^shopping-lists/', include('lists.urls', namespace='lists')),
     url(r'^users/', include('users.urls', namespace='users')),
+    url(r'^api-token-auth/', obtain_jwt_token),
 
 ]

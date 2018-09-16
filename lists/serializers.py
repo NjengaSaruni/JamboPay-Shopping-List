@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
+from common.mixins import AbstractFieldsMixin
 from common.serializers import ItemSerializer
 from lists.models import ShoppingList, ShoppingItem
 
@@ -27,6 +28,11 @@ class ShoppingListSerializer(ModelSerializer):
     items = ShoppingItemInlineSerializer(many=True, read_only=True)
     total = serializers.ReadOnlyField()
     total_bought = serializers.ReadOnlyField()
+
+    def create(self, validated_data):
+        print validated_data
+
+        return super(ShoppingListSerializer, self).create(validated_data)
 
 
     class Meta:
