@@ -22,7 +22,7 @@ class ShoppingListListCreateView(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         request.data['shopper'] = request.user.id
 
-        return super(ShoppingListListCreateView, self).create(request);
+        return super(ShoppingListListCreateView, self).create(request)
 
 
 class ShoppingListDetailView(GetQuerysetMixin, generics.RetrieveUpdateDestroyAPIView):
@@ -30,12 +30,17 @@ class ShoppingListDetailView(GetQuerysetMixin, generics.RetrieveUpdateDestroyAPI
     queryset = ShoppingList.objects.all()
 
 
-class ShoppingItemListCreateView(GetQuerysetMixin, generics.ListCreateAPIView):
+class ShoppingItemListCreateView(generics.ListCreateAPIView):
     serializer_class = ShoppingItemSerializer
     queryset = ShoppingItem.objects.all()
     search_fields = [
         'item__name', 'item__price'
     ]
+
+    def create(self, request, *args, **kwargs):
+        request.data['shopper'] = request.user.id
+
+        super(ShoppingItemListCreateView, self).create(request)
 
 
 class ShoppingItemDetailView(GetQuerysetMixin, generics.RetrieveUpdateDestroyAPIView):
